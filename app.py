@@ -158,6 +158,32 @@ if uploaded_file is not None:
                 # Raw OCR text (collapsible)
                 with st.expander("View raw OCR text"):
                     st.markdown(result['raw_ocr'])
+                # Add JSON display
+                with st.expander("View extracted JSON data"):
+                    # Create a clean version of the result for display
+                    display_json = {
+                        'business_name': result['business_name'],
+                        'date': result['date'],
+                        'items': result['items'],
+                        'subtotal': result['subtotal'],
+                        'tax': result['tax'],
+                        'total': result['total']
+                    }
+                    
+                    # Display formatted JSON
+                    st.json(display_json)
+                    
+                    # Add a button to copy JSON to clipboard
+                    json_str = json.dumps(display_json, indent=2)
+                    st.code(json_str, language="json")
+                    
+                    # Add download button
+                    st.download_button(
+                        label="Download JSON",
+                        data=json_str,
+                        file_name="receipt_data.json",
+                        mime="application/json"
+                    )
 
 else:
     # Show instructions when no file is uploaded
